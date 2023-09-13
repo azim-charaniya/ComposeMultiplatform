@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.compose")
+    kotlin("plugin.serialization") version "1.9.0"
 }
 
 kotlin {
@@ -18,6 +19,10 @@ kotlin {
         }
     }
 
+    val coroutinesVersion = "1.7.3"
+    val ktorVersion = "2.3.2"
+
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -26,13 +31,34 @@ kotlin {
                 implementation(compose.material)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+
+                // KTOR and coroutines
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-cio:$ktorVersion")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                implementation("io.ktor:ktor-client-logging:$ktorVersion")
+
+
             }
         }
         val androidMain by getting {
             dependencies {
                 api("androidx.activity:activity-compose:1.7.2")
                 api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.10.1")
+                api("androidx.core:core-ktx:1.12.0")
+                implementation("androidx.compose.ui:ui-tooling:1.5.1")
+                implementation("androidx.compose.ui:ui-tooling-preview:1.5.1")
+                implementation("androidx.compose.ui:ui-tooling-preview-android:1.5.1")
+                api(compose.preview)
+
+                // Ktor
+                implementation("io.ktor:ktor-client-android:$ktorVersion")
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+
             }
         }
         val iosX64Main by getting
@@ -65,4 +91,14 @@ android {
     kotlin {
         jvmToolchain(11)
     }
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3"
+    }
+
+
+
 }

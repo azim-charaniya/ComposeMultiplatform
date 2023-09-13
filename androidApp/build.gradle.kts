@@ -36,3 +36,6 @@ android {
         jvmToolchain(11)
     }
 }
+dependencies {
+    implementation("androidx.compose.ui:ui-tooling-preview-android:1.5.1")
+}

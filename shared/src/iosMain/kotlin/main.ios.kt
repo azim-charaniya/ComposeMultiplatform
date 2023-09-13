@@ -1,5 +1,6 @@
 import androidx.compose.ui.window.ComposeUIViewController
+import one.azim.todo.shared.Ui.App
 
-actual fun getPlatformName(): String = "iOS"
+
 
 fun MainViewController() = ComposeUIViewController { App() }
